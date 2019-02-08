@@ -1,9 +1,9 @@
-package com.learn.spark.transform
+package com.learn.spark.transform.partition_id
 
-import org.apache.spark.sql.functions.monotonically_increasing_id
+import org.apache.spark.sql.functions.{col, spark_partition_id}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object IncrementingNumberColumn {
+object SparkPartitionId {
   def main(args: Array[String]): Unit = {
     val session =
       SparkSession
@@ -29,11 +29,13 @@ object IncrementingNumberColumn {
         "GP Office (%)",
         "Post Office (%)",
         "Franchise (%)"
-      )
+      ) // To divide data into multiple partition, so that there will be more than one partition
+      .repartition(3, col("Electricity Office (%)"))
       .transform(addStaticColumn())
     count.foreach(println(_))
   }
 
   def addStaticColumn()(df: DataFrame) =
-    df.withColumn("Incrementing Number", monotonically_increasing_id())
+    df.withColumn("Incrementing Number", spark_partition_id())
+
 }

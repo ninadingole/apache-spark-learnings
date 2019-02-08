@@ -1,15 +1,14 @@
-package com.learn.spark.transform
+package com.learn.spark.transform.incrementing_column
 
-import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.functions.monotonically_increasing_id
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object AddStaticColumn {
-
+object IncrementingNumberColumn {
   def main(args: Array[String]): Unit = {
     val session =
       SparkSession
         .builder()
-        .appName("Hello World SparkDF")
+        .appName("Incrementing Number SparkDF")
         .master("local[2]")
         .getOrCreate()
     val count = session.read
@@ -36,5 +35,5 @@ object AddStaticColumn {
   }
 
   def addStaticColumn()(df: DataFrame) =
-    df.withColumn("CustomCol", lit("N"))
+    df.withColumn("Incrementing Number", monotonically_increasing_id())
 }

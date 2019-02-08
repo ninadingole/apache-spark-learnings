@@ -1,14 +1,15 @@
-package com.learn.spark.transform
+package com.learn.spark.transform.static_column
 
-import org.apache.spark.sql.functions.{col, spark_partition_id}
+import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object SparkPartitionId {
+object AddStaticColumn {
+
   def main(args: Array[String]): Unit = {
     val session =
       SparkSession
         .builder()
-        .appName("Incrementing Number SparkDF")
+        .appName("Hello World SparkDF")
         .master("local[2]")
         .getOrCreate()
     val count = session.read
@@ -29,13 +30,11 @@ object SparkPartitionId {
         "GP Office (%)",
         "Post Office (%)",
         "Franchise (%)"
-      ) // To divide data into multiple partition, so that there will be more than one partition
-      .repartition(3, col("Electricity Office (%)"))
+      )
       .transform(addStaticColumn())
     count.foreach(println(_))
   }
 
   def addStaticColumn()(df: DataFrame) =
-    df.withColumn("Incrementing Number", spark_partition_id())
-
+    df.withColumn("CustomCol", lit("N"))
 }
