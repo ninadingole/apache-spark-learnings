@@ -6,6 +6,7 @@ object Libs {
 
   lazy val `Spark` = "org.apache.spark" %% "spark-core" % SparkVersion
   lazy val `Spark-Sql` = "org.apache.spark" %% "spark-sql" % SparkVersion
+  lazy val `Spark-MlLib` = "org.apache.spark" %% "spark-mllib" % SparkVersion
   lazy val `Spark-Hive` = "org.apache.spark" %% "spark-hive" % SparkVersion
   lazy val `Scalactic` = "org.scalactic" %% "scalactic" % ScalaTestVersion
   lazy val `HbaseTestingUtil` =
