@@ -1,7 +1,7 @@
 package com.spark.learn.parallel
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.hadoop.hbase.HBaseTestingUtility
+import org.apache.hadoop.hbase.{HBaseTestingUtility, MiniHBaseCluster}
 import org.scalatest._
 
 class HBaseSparkDFTest
@@ -26,11 +26,13 @@ class HBaseSparkDFTest
 
 object HBaseSparkDFTest {
   @transient var util: HBaseTestingUtility = _
+  @transient var cluster: MiniHBaseCluster = _
 
   def start() = {
     if (util == null) {
+
       util = new HBaseTestingUtility()
-      util.startMiniCluster(1)
+      cluster = util.startMiniCluster(1)
     }
   }
 
