@@ -15,10 +15,10 @@ class SparkListenerDemoTest
     with Matchers
     with BeforeAndAfterAll {
 
-  val URLPrefix = "hdfs://localhost"
-  val hadoopPath = new Path(HdfsFile)
-  val sourceFile = new Path("src/main/resources/datafile.csv")
-  private val HdfsFile = "/data/datafile.csv"
+  lazy val URLPrefix = "hdfs://localhost"
+  lazy val hadoopPath = new Path(HdfsFile)
+  lazy val sourceFile = new Path("src/main/resources/datafile.csv")
+  lazy val HdfsFile = "/data/datafile.csv"
   var cluster: MiniDFSCluster = _
 
   test("delete file from HDFS after job ends") {
