@@ -12,6 +12,8 @@ unmanagedResourceDirectories in Test += baseDirectory.value / "conf"
 
 excludeDependencies ++= Seq(ExclusionRule("com.google.guava", "guava"))
 
+resolvers += "Maven local" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+
 libraryDependencies ++= Seq(Libs.`Spark`,
   Libs.`Spark-Sql`,
   Libs.`Spark-Hive`,
@@ -23,4 +25,6 @@ libraryDependencies ++= Seq(Libs.`Spark`,
   Libs.`Spark-Hive`,
   Libs.`HadoopHdfs-Test`, Libs.`HadoopHdfs-Test1`,
   Libs.`Hadoop-Common-Test`,
-  Libs.`SparkTestingBase`)
+  Libs.`SparkTestingBase`,
+  Libs.Geode.`geode-functions`,
+  Libs.Geode.`geode-spark-connector`)

@@ -9,6 +9,7 @@ object Libs {
   lazy val `Spark-MlLib` = "org.apache.spark" %% "spark-mllib" % SparkVersion
   lazy val `Spark-Hive` = "org.apache.spark" %% "spark-hive" % SparkVersion
   lazy val `Scalactic` = "org.scalactic" %% "scalactic" % ScalaTestVersion
+
   lazy val `HbaseTestingUtil` =
     "org.apache.hbase" % "hbase-testing-util" % "1.4.9" % Test
   lazy val `GoogleGuava` = "com.google.guava" % "guava" % "12.0.1" force ()
@@ -20,5 +21,12 @@ object Libs {
   lazy val `ScalaTest` = "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
 
   lazy val `SparkTestingBase` = "com.holdenkarau" %% "spark-testing-base" % "2.4.0_0.11.0" % Test
+
+  object Geode {
+    val Version = "1.0.0-SNAPSHOT"
+    val `geode-functions` =
+      "org.apache.geode.spark.connector" % "geode-functions" % Version
+    val `geode-spark-connector` = "org.apache.geode.spark.connector" % "geode-spark-connector" % Version
+  }
 
 }
