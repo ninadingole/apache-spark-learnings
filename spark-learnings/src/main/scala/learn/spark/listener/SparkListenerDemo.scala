@@ -8,7 +8,6 @@ import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.SparkContext
 import org.apache.spark.scheduler._
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.util.LongAccumulator
 
 object SparkListenerDemo {
   val log =
@@ -26,9 +25,6 @@ object SparkListenerDemo {
         .master("local[2]")
         .getOrCreate()
 
-    val counter: LongAccumulator =
-      session.sparkContext.longAccumulator("counter")
-
     session.sparkContext
       .addSparkListener(
         new SparkDemoListener(path, session.sparkContext, deleteFile))
@@ -41,11 +37,8 @@ object SparkListenerDemo {
         HelloWorldDF.ColumnSeq: _*
       )
     df.foreach(row => {
-      counter.add(1)
       log.severe(row.toString())
     })
-    log.severe("----------------- SUMMARY ------------------")
-    log.severe(s"Count is: ${counter.count}")
   }
 }
 
