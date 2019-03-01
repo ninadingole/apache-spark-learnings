@@ -13,3 +13,6 @@
  */
 
 rootProject.name='apache-spark-learnings'
+include 'domain-models'
+include 'spark-learnings'
+

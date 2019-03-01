@@ -95,3 +95,13 @@ allprojects {
         }
     }
 }
+
+project(":domain-models"){
+
+}
+
+project(":spark-learnings") {
+    dependencies {
+        compile project(":domain-models")
+    }
+}
