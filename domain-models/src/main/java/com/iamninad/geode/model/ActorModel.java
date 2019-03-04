@@ -1,8 +1,12 @@
 package com.iamninad.geode.model;
 
+import org.apache.geode.pdx.PdxReader;
+import org.apache.geode.pdx.PdxSerializable;
+import org.apache.geode.pdx.PdxWriter;
+
 import java.io.Serializable;
 
-public class ActorModel implements Serializable {
+public class ActorModel implements Serializable, PdxSerializable {
     private String id;
     private String name;
     private int birthYear;
@@ -48,6 +52,27 @@ public class ActorModel implements Serializable {
 
     public void setPrimaryProfession(String primaryProfession) {
         this.primaryProfession = primaryProfession;
+    }
+
+
+    @Override
+    public void toData(PdxWriter writer) {
+        writer.writeString("id", this.id);
+        writer.writeString("name", this.name);
+        writer.writeInt("birthYear", this.birthYear);
+        writer.writeInt("deathYear", this.deathYear);
+        writer.writeString("primaryProfession", this.primaryProfession);
+    }
+
+    @Override
+    public void fromData(PdxReader reader) {
+        ActorModel model = new ActorModel();
+        model.setId(reader.readString("id"));
+        model.setName(reader.readString("name"));
+        model.setBirthYear(reader.readInt("birthYear"));
+        model.setDeathYear(reader.readInt("deathYear"));
+        model.setPrimaryProfession(reader.readString("primaryProfession"));
+
     }
 
     @Override

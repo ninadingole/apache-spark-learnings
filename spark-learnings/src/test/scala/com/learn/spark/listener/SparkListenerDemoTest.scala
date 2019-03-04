@@ -3,7 +3,6 @@ package com.learn.spark.listener
 import java.io.File
 
 import com.holdenkarau.spark.testing.SharedSparkContext
-import learn.spark.listener.SparkListenerDemo
 import org.apache.commons.io.FileUtils
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
