@@ -1,8 +1,5 @@
 package com.learn.spark.grouping
 
-import java.text.SimpleDateFormat
-
-import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DataTypes, StructField, StructType}
@@ -44,18 +41,11 @@ object AccountBalanceProcessor {
       .getOrCreate()
 
     val df = session.createDataFrame(list, schema)
-    val newDf =
-      df.withColumn("date", concat(col("acct_key"), lit("_"), col("posn_dt")))
 
-    newDf
-      .map(row => {
-        val acctKey = row.getAs[String]("acct_key")
-        val posnDt = row.getAs[String]("posn_dt").toLong
-        val key = new SimpleDateFormat("yyyy-MM").format(posnDt)
-        Row(row(0), row(1), key)
-      })(RowEncoder.apply(newDf.schema))
+    df.withColumn("yearandmonth",
+                  from_unixtime(col("posn_dt").divide(1000), "yyyy-MM"))
       .orderBy(desc("posn_dt"))
-      .groupBy(col("date"), col("acct_key"))
+      .groupBy(col("yearandmonth"), col("acct_key"))
       .agg(first("posn_dt").as("posn_dt"))
       .selectExpr("concat(acct_key,'_',posn_dt) as key")
       .show(false)
