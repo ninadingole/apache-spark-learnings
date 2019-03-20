@@ -61,6 +61,10 @@ allprojects {
         compile "org.scala-lang.modules:scala-java8-compat_2.11:$scalaCompatVersion"
         compile "org.apache.geode.spark.connector:geode-functions:1.0.0.SNAPSHOT"
         compile "org.apache.geode.spark.connector:geode-spark-connector:1.0.0.SNAPSHOT"
+        compile "org.apache.hbase:hbase-client:2.1.0"
+        compile group: 'org.apache.hbase', name: 'hbase-mapreduce', version: '2.1.0'
+
+
         testCompile(group:'org.apache.hbase', name:'hbase-testing-util', version:'1.4.9')
         testCompile(group:"org.apache.hadoop",name: "hadoop-common", version: "2.8.3", classifier:"tests")
         testCompile(group:"org.apache.hadoop" , name:"hadoop-hdfs", version: "2.8.3", classifier: "tests")
@@ -73,8 +77,8 @@ allprojects {
 
 
 
-        //compile "org.apache.logging.log4j:log4j-api-scala_2.12:$scalaLog4jVersion"
-        //compile "org.scala-lang:scala-library:$scalaVersion"
+//        compile "org.apache.logging.log4j:log4j-api-scala_2.11:$scalaLog4jVersion"
+//        compile "org.scala-lang:scala-library:$scalaVersion"
     }
     repositories {
         maven { url 'https://repo.spring.io/libs-release' }

@@ -1,5 +1,7 @@
 package com.learn.spark.parallel
 
+import com.learn.spark.testcore.HBaseSparkDFTest
+
 class Test2 extends HBaseSparkDFTest {
   test("Hello") {
     val rdd = spark.sqlContext.read

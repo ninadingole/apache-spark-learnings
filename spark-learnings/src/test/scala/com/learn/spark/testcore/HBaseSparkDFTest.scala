@@ -1,7 +1,17 @@
-package com.learn.spark.parallel
+package com.learn.spark.testcore
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.hadoop.hbase.{HBaseTestingUtility, MiniHBaseCluster}
+import org.apache.hadoop.hbase.client.{
+  ColumnFamilyDescriptorBuilder,
+  HBaseAdmin,
+  TableDescriptorBuilder
+}
+import org.apache.hadoop.hbase.util.Bytes
+import org.apache.hadoop.hbase.{
+  HBaseTestingUtility,
+  MiniHBaseCluster,
+  TableName
+}
 import org.scalatest._
 
 class HBaseSparkDFTest
@@ -11,6 +21,19 @@ class HBaseSparkDFTest
     with BeforeAndAfterAll
     with BeforeAndAfterEach {
 
+  def createTable(tableName: String, colFamily: String) = {
+    val connection = HBaseSparkDFTest.util.getConnection
+    val admin = new HBaseAdmin(connection)
+    admin.createTable(
+      TableDescriptorBuilder
+        .newBuilder(TableName.valueOf(tableName))
+        .setColumnFamily(
+          ColumnFamilyDescriptorBuilder
+            .newBuilder(Bytes.toBytes(colFamily))
+            .build()
+        )
+        .build())
+  }
   override def beforeAll(): Unit = {
     super.beforeAll()
     HBaseSparkDFTest.start()

@@ -45,7 +45,7 @@ object AccountBalanceProcessor {
 
     val df = session.createDataFrame(list, schema)
     val newDf =
-      df.withColumn("key", concat(col("acct_key"), lit("_"), col("posn_dt")))
+      df.withColumn("date", concat(col("acct_key"), lit("_"), col("posn_dt")))
 
     newDf
       .map(row => {
@@ -55,7 +55,7 @@ object AccountBalanceProcessor {
         Row(row(0), row(1), key)
       })(RowEncoder.apply(newDf.schema))
       .orderBy(desc("posn_dt"))
-      .groupBy(col("key"), col("acct_key"))
+      .groupBy(col("date"), col("acct_key"))
       .agg(first("posn_dt").as("posn_dt"))
       .selectExpr("concat(acct_key,'_',posn_dt) as key")
       .show(false)
