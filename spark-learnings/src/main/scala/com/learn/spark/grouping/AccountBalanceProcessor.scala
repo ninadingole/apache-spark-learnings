@@ -38,19 +38,8 @@ object AccountBalanceProcessor {
       .builder()
       .appName("accountBalance")
       .master("local[2]")
-      .config("password", "password@123")
-      .config("spark.logconf", "true")
-      .config(
-        "spark.hadoop.hadoop.security.credential.provider.path",
-        "path to jceks"
-      )
       .getOrCreate()
 
-    val hadoopConfig = session.sparkContext.hadoopConfiguration
-
-    val password: Array[Char] = hadoopConfig.getPassword("sample1.key")
-
-    println(new String(password))
     val df = session.createDataFrame(list, schema)
 
     df.repartition(col("acct_key"))
