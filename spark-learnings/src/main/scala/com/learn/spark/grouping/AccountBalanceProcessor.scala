@@ -38,17 +38,30 @@ object AccountBalanceProcessor {
       .builder()
       .appName("accountBalance")
       .master("local[2]")
+      .config("password", "password@123")
+      .config("spark.logconf", "true")
+      .config(
+        "spark.hadoop.hadoop.security.credential.provider.path",
+        "path to jceks"
+      )
       .getOrCreate()
 
+    val hadoopConfig = session.sparkContext.hadoopConfiguration
+
+    val password: Array[Char] = hadoopConfig.getPassword("sample1.key")
+
+    println(new String(password))
     val df = session.createDataFrame(list, schema)
 
-    df.withColumn("yearandmonth",
+    df.repartition(col("acct_key"))
+      .withColumn("yearandmonth",
                   from_unixtime(col("posn_dt").divide(1000), "yyyy-MM"))
       .orderBy(desc("posn_dt"))
       .groupBy(col("yearandmonth"), col("acct_key"))
       .agg(first("posn_dt").as("posn_dt"))
-      .selectExpr("concat(acct_key,'_',posn_dt) as key")
+      .select(col("acct_key"), col("posn_dt"))
       .show(false)
     session.close()
+
   }
 }
