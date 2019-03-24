@@ -3,7 +3,6 @@ package com.learn.spark.testcore
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.hadoop.hbase.client.{
   ColumnFamilyDescriptorBuilder,
-  HBaseAdmin,
   TableDescriptorBuilder
 }
 import org.apache.hadoop.hbase.util.Bytes
@@ -21,19 +20,8 @@ class HBaseSparkDFTest
     with BeforeAndAfterAll
     with BeforeAndAfterEach {
 
-  def createTable(tableName: String, colFamily: String) = {
-    val connection = HBaseSparkDFTest.util.getConnection
-    val admin = new HBaseAdmin(connection)
-    admin.createTable(
-      TableDescriptorBuilder
-        .newBuilder(TableName.valueOf(tableName))
-        .setColumnFamily(
-          ColumnFamilyDescriptorBuilder
-            .newBuilder(Bytes.toBytes(colFamily))
-            .build()
-        )
-        .build())
-  }
+  override protected implicit def enableHiveSupport: Boolean = false
+
   override def beforeAll(): Unit = {
     super.beforeAll()
     HBaseSparkDFTest.start()
@@ -45,6 +33,20 @@ class HBaseSparkDFTest
   }
 
   override protected implicit def reuseContextIfPossible: Boolean = true
+
+  def createTable(tableName: String, colFamily: String) = {
+    val connection = HBaseSparkDFTest.util.getConnection
+    val admin = HBaseSparkDFTest.util.getAdmin
+    admin.createTable(
+      TableDescriptorBuilder
+        .newBuilder(TableName.valueOf(tableName))
+        .setColumnFamily(
+          ColumnFamilyDescriptorBuilder
+            .newBuilder(Bytes.toBytes(colFamily))
+            .build()
+        )
+        .build())
+  }
 }
 
 object HBaseSparkDFTest {
@@ -60,11 +62,14 @@ object HBaseSparkDFTest {
   }
 
   def clear(): Unit = {
-    val admin = util.getHBaseAdmin
+    val admin = util.getAdmin
     admin
       .listTableNames()
       .foreach(
-        table => admin.deleteTable(table)
+        table => {
+          admin.disableTable(table)
+          admin.deleteTable(table)
+        }
       )
   }
 }
