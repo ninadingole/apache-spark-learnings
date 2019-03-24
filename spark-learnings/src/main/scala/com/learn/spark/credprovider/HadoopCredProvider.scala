@@ -23,8 +23,6 @@ object HadoopCredProvider {
       .builder()
       .appName("accountBalance")
       .master("local[2]")
-      .config("password", "password@123")
-      .config("spark.logconf", "true")
       .config(
         "spark.hadoop.hadoop.security.credential.provider.path",
         "<path to jceks>"
