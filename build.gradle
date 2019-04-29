@@ -109,4 +109,9 @@ project(":spark-learnings") {
     dependencies {
         compile project(":domain-models")
     }
+
+
+    test {
+        jvmArgs '-Xms512M -Xmx2048m -XX:MaxPermSize=2048m -XX:+CMSClassUnloadingEnabled'
+    }
 }
