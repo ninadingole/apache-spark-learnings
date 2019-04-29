@@ -20,7 +20,13 @@ class AccountBalanceProcessorTest
       val df = spark.createDataFrame(list, schema)
       val resultDF = new AccountBalanceProcessor().process(df)
       val rows = resultDF.collect()
-      println(rows)
+      val row1 = rows(0)
+      assert(row1.getAs[String](0) == "123456789")
+      assert(row1.getAs[String](1) == "1488412800000")
+
+      val row2 = rows(1)
+      assert(row2.getAs[String](0) == "123456789")
+      assert(row2.getAs[String](1) == "1547251200000")
     }
   }
 

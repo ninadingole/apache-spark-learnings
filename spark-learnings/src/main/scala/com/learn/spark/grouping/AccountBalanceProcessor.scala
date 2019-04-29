@@ -11,7 +11,7 @@ class AccountBalanceProcessor {
       .withColumn("yearandmonth",
                   from_unixtime(col("posn_dt").divide(1000), "yyyy-MM"))
       .groupBy(col("yearandmonth"), col("acct_key"))
-      .agg(first("posn_dt").as("posn_dt"))
+      .agg(max("posn_dt").as("posn_dt"))
       .select(col("acct_key"), col("posn_dt"))
   }
 
