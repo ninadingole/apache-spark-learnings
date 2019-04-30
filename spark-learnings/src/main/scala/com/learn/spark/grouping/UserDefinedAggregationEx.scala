@@ -15,10 +15,8 @@ class UserDefinedAggregationEx {
   def process(df: DataFrame): DataFrame = {
     df.groupBy(tranKey)
       .agg(
-        AggregateRow(col("TRAN_KEY"),
-                     col("LINE_NBR"),
-                     col("TYPE_CD"),
-                     col("LINE_DESC")).as("AGG_DATA"))
+        AggregateRow(col("LINE_NBR"), col("TYPE_CD"), col("LINE_DESC"))
+          .as("AGG_DATA"))
 
   }
 
@@ -27,8 +25,7 @@ class UserDefinedAggregationEx {
 object AggregateRow extends UserDefinedAggregateFunction {
   override def inputSchema: StructType =
     StructType(
-      StructField("TRAN_KEY", StringType)
-        :: StructField("LINE_NBR", IntegerType)
+      StructField("LINE_NBR", IntegerType)
         :: StructField("TYPE_CD", StringType)
         :: StructField("LINE_DESC", StringType) :: Nil)
 
@@ -50,8 +47,8 @@ object AggregateRow extends UserDefinedAggregateFunction {
 
   override def update(buffer: MutableAggregationBuffer, input: Row): Unit = {
     val map = Map(
-      input.getAs[String]("input2") -> Map(input.getAs[Int]("input1") -> input
-        .getAs[String]("input3")))
+      input.getAs[String]("input1") -> Map(input.getAs[Int]("input0") -> input
+        .getAs[String]("input2")))
     buffer.update(0, map)
   }
 
